@@ -8,6 +8,7 @@ TITLE_PROP = "Task"
 EVENT_IDS_PROP = "Calendar Event IDs"
 BREAKDOWN_PROP = "Breakdown Needed?"
 EST_MIN_PROP = "Estimated mins"
+NOTES_PROP = "Notes"
 
 class NotionTasks:
     def __init__(self, token: str, database_id: str):
@@ -39,6 +40,13 @@ class NotionTasks:
         num = page["properties"].get(EST_MIN_PROP, {}).get("number")
         return int(num) if num else None
 
+    def notes_of(self, page: Dict[str, Any]) -> str | None:
+        prop = page["properties"].get(NOTES_PROP)
+        if not prop:
+            return None
+        rich = prop.get("rich_text", [])
+        return "".join([r.get("plain_text", "") for r in rich]) or None
+    
     def needs_breakdown(self, page: Dict[str,Any]) -> bool:
         return bool(page["properties"].get(BREAKDOWN_PROP, {}).get("checkbox"))
 

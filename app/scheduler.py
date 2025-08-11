@@ -67,7 +67,13 @@ async def run_once():
         else:
             due = due.astimezone(tz)
 
-        subs = breakdown(title, notion.needs_breakdown(page), notion.est_of(page))
+        notes = None
+        try:
+            notes = notion.notes_of(page)
+        except Exception:
+            pass
+        subs = breakdown(title, notion.needs_breakdown(page), notion.est_of(page), notes=notes)
+
         created_ids = []
 
         for s in subs:

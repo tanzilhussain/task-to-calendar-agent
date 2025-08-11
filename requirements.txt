@@ -11,3 +11,5 @@ google-auth-oauthlib
 google-auth-httplib2
 pytz
 python-dateutil
+google-generativeai>=0.6.0
+
